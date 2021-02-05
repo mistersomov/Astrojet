@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Juggler</string>
+
+    <string name="connect_caption">Bluetooth</string>
+    <string name="select_device">Select Device</string>
+    <string name="disconnect">Disconnect</string>
+
+
+    <string name="station_card">Station</string>
+    <string name="led">LED</string>
+    <string name="service_power">Power</string>
+
+    <string name="calibration_card">Calibration</string>
+    <string name="servo">Servo</string>
+
+    <string name="gear">Gear</string>
+    <string name="gear_check">Check</string>
+
+    <string name="design_card">Design</string>
+    <string name="dc_help">Dc, mm</string>
+    <string name="lc_help">Lc, mm</string>
+
+    <string name="indicators_card">Indicators</string>
+    <string name="indicators_altitude">Altitude</string>
+    <string name="indicators_speed">Speed</string>
+    <string name="indicators_rotation">Rotation</string>
+    <string name="indicators_temperature">Temp</string>
+
+</resources>
