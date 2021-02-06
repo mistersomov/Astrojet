@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -26,9 +27,11 @@ public class DeviceActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private DeviceAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-    public boolean isFlag;
+    public boolean isStoped;
 
     private SwipeRefreshLayout swipeRefreshLayout;
+
+    private static final String TAG = "DeviceActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +68,7 @@ public class DeviceActivity extends AppCompatActivity {
                         break;
 
                     case BluetoothDevice.ACTION_FOUND:
-                        if (!isFlag){
+                        if (!isStoped){
                             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                             if (device.getName() != null) {
                                 bluetoothDevices.add(new DeviceItem(device.getName(), device.getAddress()));
@@ -88,11 +91,13 @@ public class DeviceActivity extends AppCompatActivity {
             public void onRefresh() {
                 bluetoothAdapter.cancelDiscovery();
                 bluetoothDevices.clear();
-                bluetoothAdapter.startDiscovery();
+                isStoped = false;
 
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
+
+        Log.d(TAG, "onCreate: ");
     }
 
     @Override
@@ -119,6 +124,33 @@ public class DeviceActivity extends AppCompatActivity {
 
         registerReceiver(broadcastReceiver, intentFilter);
 
+        Log.d(TAG, "onStart: " + Boolean.toString(isStoped));
+
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d(TAG, "onRestart: ");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        isStoped = true;
+        Log.d(TAG, "onStop: " + Boolean.toString(isStoped));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: ");
     }
 
     @Override
@@ -126,6 +158,8 @@ public class DeviceActivity extends AppCompatActivity {
         super.onDestroy();
         bluetoothAdapter.cancelDiscovery();
         unregisterReceiver(broadcastReceiver);
+
+        Log.d(TAG, "onDestroy: " + Boolean.toString(isStoped));
 
     }
 

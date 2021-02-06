@@ -9,15 +9,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:orientation="vertical">
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="2.5dp"
             app:cardCornerRadius="5dp"
             app:cardElevation="1dp">
 
@@ -174,10 +175,10 @@
                     android:id="@+id/connect_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="2.5dp"
+                    android:layout_marginEnd="2.5dp"
+                    android:layout_marginBottom="2.5dp"
                     app:cardCornerRadius="5dp"
                     app:cardElevation="1dp">
 
@@ -206,10 +207,10 @@
                     android:id="@+id/calibration_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="2.5dp"
+                    android:layout_marginEnd="2.5dp"
+                    android:layout_marginBottom="2.5dp"
                     app:cardCornerRadius="5dp"
                     app:cardElevation="1dp">
 
@@ -273,10 +274,10 @@
                     android:layout_height="wrap_content"
                     android:clickable="true"
                     android:focusable="true"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="2.5dp"
+                    android:layout_marginEnd="2.5dp"
+                    android:layout_marginBottom="2.5dp"
                     app:cardCornerRadius="5dp"
                     app:cardElevation="1dp">
 
@@ -307,10 +308,10 @@
                     android:id="@+id/station"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginStart="2.5dp"
+                    android:layout_marginTop="2.5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="2.5dp"
                     app:cardCornerRadius="5dp"
                     app:cardElevation="1dp">
 
@@ -390,10 +391,10 @@
                     android:layout_height="wrap_content"
                     android:layout_rowWeight="1"
                     android:layout_columnWeight="1"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginStart="2.5dp"
+                    android:layout_marginTop="2.5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="2.5dp"
                     app:cardCornerRadius="5dp"
                     app:cardElevation="1dp">
 
@@ -469,10 +470,10 @@
                     android:id="@+id/charts_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginStart="2.5dp"
+                    android:layout_marginTop="2.5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="2.5dp"
                     android:clickable="true"
                     android:focusable="true"
                     app:cardCornerRadius="5dp"
