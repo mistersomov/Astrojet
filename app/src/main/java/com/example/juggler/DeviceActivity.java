@@ -1,5 +1,7 @@
 package com.example.juggler;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,14 +13,16 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class DeviceActivity extends AppCompatActivity {
-
     private BluetoothAdapter bluetoothAdapter;
     private ArrayList<DeviceItem> bluetoothDevices = new ArrayList<DeviceItem>();
 
@@ -27,11 +31,9 @@ public class DeviceActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private DeviceAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-    public boolean isStoped;
+    public boolean isRestarted;
 
     private SwipeRefreshLayout swipeRefreshLayout;
-
-    private static final String TAG = "DeviceActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +51,8 @@ public class DeviceActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new DeviceAdapter.OnClickListener() {
             @Override
             public void onItemClick(int position) {
-                ExampleThread exampleThread = new ExampleThread(position);
-                new Thread(exampleThread).start();
+                BondThread bondThread = new BondThread(position);
+                new Thread(bondThread).start();
             }
         });
 
@@ -63,12 +65,13 @@ public class DeviceActivity extends AppCompatActivity {
                     case BluetoothAdapter.ACTION_STATE_CHANGED:
                         if (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1) == BluetoothAdapter.STATE_ON) {
                             bluetoothAdapter.startDiscovery();
-                            break;
+                        }else if (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1) == BluetoothAdapter.STATE_OFF) {
+                            bluetoothAdapter.cancelDiscovery();
                         }
                         break;
 
                     case BluetoothDevice.ACTION_FOUND:
-                        if (!isStoped){
+                        if (!isRestarted){
                             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                             if (device.getName() != null) {
                                 bluetoothDevices.add(new DeviceItem(device.getName(), device.getAddress()));
@@ -79,8 +82,18 @@ public class DeviceActivity extends AppCompatActivity {
                             break;
                         }
 
-                    case BluetoothDevice.ACTION_ACL_CONNECTED:
-                        startActivityForResult(new Intent(DeviceActivity.this, MainActivity.class), 1);
+                    case BluetoothDevice.ACTION_BOND_STATE_CHANGED:
+                        int extraBond = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, -1);
+                        if (extraBond == BluetoothDevice.BOND_BONDED){
+                            //startActivityForResult(new Intent(DeviceActivity.this, MainActivity.class), 1);
+                            Toast.makeText(
+                                    context,
+                                    "Connected",
+                                    Toast.LENGTH_SHORT
+                            ).show();
+                            finish();
+                        }
+                        break;
                 }
             }
         };
@@ -89,15 +102,9 @@ public class DeviceActivity extends AppCompatActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                bluetoothAdapter.cancelDiscovery();
-                bluetoothDevices.clear();
-                isStoped = false;
-
-                swipeRefreshLayout.setRefreshing(false);
+                refresh();
             }
         });
-
-        Log.d(TAG, "onCreate: ");
     }
 
     @Override
@@ -111,46 +118,26 @@ public class DeviceActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT
             ).show();
         }
-        if (!bluetoothAdapter.isEnabled()){
+        if (!bluetoothAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, 1);
-        }else{
+        }
+        if (!isRestarted) {
             bluetoothAdapter.startDiscovery();
         }
+
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         intentFilter.addAction(BluetoothDevice.ACTION_FOUND);
-        intentFilter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+        intentFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
 
         registerReceiver(broadcastReceiver, intentFilter);
-
-        Log.d(TAG, "onStart: " + Boolean.toString(isStoped));
-
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.d(TAG, "onRestart: ");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume: ");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        isStoped = true;
-        Log.d(TAG, "onStop: " + Boolean.toString(isStoped));
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause: ");
+        isRestarted = true;
     }
 
     @Override
@@ -159,14 +146,27 @@ public class DeviceActivity extends AppCompatActivity {
         bluetoothAdapter.cancelDiscovery();
         unregisterReceiver(broadcastReceiver);
 
-        Log.d(TAG, "onDestroy: " + Boolean.toString(isStoped));
-
     }
 
-    private class ExampleThread implements Runnable{
-        int position;
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 
-        public ExampleThread(int position){
+    public void refresh(){
+        bluetoothAdapter.cancelDiscovery();
+        bluetoothDevices.clear();
+        adapter.notifyDataSetChanged();
+        isRestarted = false;
+        bluetoothAdapter.startDiscovery();
+
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    private class BondThread implements Runnable{
+        private int position;
+
+        public BondThread(int position){
             this.position = position;
         }
 

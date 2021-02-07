@@ -40,9 +40,11 @@ public class MainActivity extends AppCompatActivity {
     private Set<BluetoothDevice> pairedDevices;
     boolean connected;
     private LinearLayout bluetoothLayout;
+    private BluetoothService bluetoothService;
 
-    private MaterialButton selectDevice, disconnectButton;
-    private MaterialTextView devName;
+    //private View view;
+    //private MaterialButton selectDevice, disconnectButton;
+   // private MaterialTextView devName;
     private MaterialCardView cameraCard, chartsCard;
 
     @Override
@@ -53,41 +55,10 @@ public class MainActivity extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-
         bluetoothLayout = findViewById(R.id.bluetooth_ll);
 
-        pairedDevices = bluetoothAdapter.getBondedDevices();
-
-        selectDevice = getLayoutInflater().inflate(R.layout.connect_layout, null).findViewById(R.id.select_device);
-
-        setLayout(bluetoothLayout);
-
-        if (!connected){
-            selectDevice.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(MainActivity.this, DeviceActivity.class);
-                    startActivity(intent);
-                }
-            });
-        }else{
-            disconnectButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    for (BluetoothDevice device : pairedDevices){
-                        try{
-                            Method method = device.getClass().getMethod(
-                                    "removeBond",
-                                    (Class[]) null);
-                            method.invoke(device, (Object[]) null);
-
-                        }catch (Exception e){
-                            Log.e("Error", e.getMessage());
-                        }
-                    }
-                }
-            });
-        }
+        bluetoothService = new BluetoothService(this, bluetoothAdapter, bluetoothLayout);
+        bluetoothLayout.addView(bluetoothService.setView());
 
         cameraCard = findViewById(R.id.camera_card);
         cameraCard.setOnClickListener(new View.OnClickListener() {
@@ -97,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         chartsCard = findViewById(R.id.charts_card);
         chartsCard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,46 +79,46 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+            switch (action){
+                case BluetoothDevice.ACTION_BOND_STATE_CHANGED:
+                    int extraBond = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, -1);
+                    if (extraBond == BluetoothDevice.BOND_NONE){
+                        pairedDevices = bluetoothAdapter.getBondedDevices();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                bluetoothLayout.addView(bluetoothService.update());
+                            }
+                        });
+                    }
+                    break;
+            }
+        }
+    };
+
     @Override
     protected void onStart() {
         super.onStart();
 
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
-        intentFilter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-
-    }
-
-    public void setLayout(LinearLayout linearLayout){
-        View v;
-        if (pairedDevices.size() > 0){
-            connected = true;
-
-            v = getLayoutInflater().inflate(R.layout.disconnect_layout, null);
-            disconnectButton = v.findViewById(R.id.disconnect_btn);
-            devName = v.findViewById(R.id.device_name);
-            for (BluetoothDevice device : pairedDevices) {
-                devName.setText(device.getName());
-            }
-
-        }else{
-            connected = false;
-            v = getLayoutInflater().inflate(R.layout.connect_layout, null);
-            selectDevice = v.findViewById(R.id.select_device);
-        }
-        linearLayout.addView(v);
-
+        intentFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
+        registerReceiver(broadcastReceiver, intentFilter);
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onResume() {
+        super.onResume();
+        bluetoothLayout.addView(bluetoothService.update());
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-
+        unregisterReceiver(broadcastReceiver);
     }
 }

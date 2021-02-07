@@ -22,12 +22,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-
         android:padding="5dp"
         android:textAlignment="center"
         android:maxLines="1"
         style="@style/TextAppearance.AppCompat.Title"
-        android:textSize="24sp" />
+        android:textSize="22sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/dividerHorizontal"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/disconnect_btn"
@@ -35,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:padding="5dp"
         android:text="@string/disconnect"
         app:icon="@drawable/ic_baseline_bluetooth_24" />

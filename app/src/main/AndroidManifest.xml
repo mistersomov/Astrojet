@@ -14,7 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Juggler">
-        <activity android:name=".DeviceActivity"></activity>
+        <activity android:name=".DeviceActivity"
+            android:screenOrientation="portrait">
+        </activity>
         <activity android:name=".CameraActivity" />
         <activity android:name=".ChartsActivity" />
         <activity
@@ -22,11 +24,9 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>
