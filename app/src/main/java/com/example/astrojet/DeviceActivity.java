@@ -1,7 +1,5 @@
-package com.example.juggler;
+package com.example.astrojet;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,31 +7,36 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.PersistableBundle;
+
 import android.util.Log;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class DeviceActivity extends AppCompatActivity {
     private BluetoothAdapter bluetoothAdapter;
     private ArrayList<DeviceItem> bluetoothDevices = new ArrayList<DeviceItem>();
+    private BluetoothDevice remDev;
 
     private BroadcastReceiver broadcastReceiver;
 
     private RecyclerView recyclerView;
     private DeviceAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-    public boolean isRestarted;
+    private boolean isRestarted;
 
     private SwipeRefreshLayout swipeRefreshLayout;
+
+    private static final String TAG = "DeviceActivity";
+    public static final String REM_DEV = "com.example.astrojet.remDev";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +89,7 @@ public class DeviceActivity extends AppCompatActivity {
                         int extraBond = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, -1);
                         if (extraBond == BluetoothDevice.BOND_BONDED){
                             //startActivityForResult(new Intent(DeviceActivity.this, MainActivity.class), 1);
+
                             Toast.makeText(
                                     context,
                                     "Connected",
@@ -174,7 +178,8 @@ public class DeviceActivity extends AppCompatActivity {
         public void run() {
             bluetoothAdapter.cancelDiscovery();
             String address = bluetoothDevices.get(position).getDeviceAddress();
-            bluetoothAdapter.getRemoteDevice(address).createBond();
+            remDev = bluetoothAdapter.getRemoteDevice(address);
+            remDev.createBond();
         }
     }
 }

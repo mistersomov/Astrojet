@@ -1,4 +1,4 @@
-package com.example.juggler;
+package com.example.astrojet;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Constants {
+public class ChartsConstants {
 
     //Ambient pressure, MPa
     public static final double P_ATM = 0.101325;

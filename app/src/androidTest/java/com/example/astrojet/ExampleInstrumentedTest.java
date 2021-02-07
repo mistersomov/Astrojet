@@ -1,4 +1,4 @@
-package com.example.juggler;
+package com.example.astrojet;
 
 import android.content.Context;
 

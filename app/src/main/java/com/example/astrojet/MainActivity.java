@@ -1,50 +1,39 @@
-package com.example.juggler;
+package com.example.astrojet;
 
 
 import java.io.IOException;
-import java.lang.reflect.Method;
-import java.util.Set;
 import java.util.UUID;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.bluetooth.BluetoothAdapter;
 
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.textfield.MaterialAutoCompleteTextView;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textview.MaterialTextView;
 
 public class MainActivity extends AppCompatActivity {
 
     //UUID
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+    private static final String TAG = "MainActivity";
 
     private BluetoothAdapter bluetoothAdapter;
-    private Set<BluetoothDevice> pairedDevices;
-    boolean connected;
+    private BluetoothDevice remoteDevice;
     private LinearLayout bluetoothLayout;
     private BluetoothService bluetoothService;
 
-    //private View view;
-    //private MaterialButton selectDevice, disconnectButton;
-   // private MaterialTextView devName;
     private MaterialCardView cameraCard, chartsCard;
 
     @Override
@@ -56,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         bluetoothLayout = findViewById(R.id.bluetooth_ll);
+        remoteDevice = null;
 
         bluetoothService = new BluetoothService(this, bluetoothAdapter, bluetoothLayout);
         bluetoothLayout.addView(bluetoothService.setView());
@@ -88,13 +78,12 @@ public class MainActivity extends AppCompatActivity {
                 case BluetoothDevice.ACTION_BOND_STATE_CHANGED:
                     int extraBond = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, -1);
                     if (extraBond == BluetoothDevice.BOND_NONE){
-                        pairedDevices = bluetoothAdapter.getBondedDevices();
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                bluetoothLayout.addView(bluetoothService.update());
-                            }
-                        });
+                        bluetoothLayout.addView(bluetoothService.update());
+                        Toast.makeText(
+                                MainActivity.this,
+                                "Disconnected",
+                                Toast.LENGTH_SHORT
+                        ).show();
                     }
                     break;
             }
@@ -111,14 +100,53 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onRestart() {
+        super.onRestart();
         bluetoothLayout.addView(bluetoothService.update());
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(broadcastReceiver);
+    }
+    private class ClientSocket extends Thread{
+        private final BluetoothSocket mmSocket;
+        private final BluetoothDevice mmDevice;
+
+        public ClientSocket(BluetoothDevice device){
+            BluetoothSocket tmp = null;
+            mmDevice = device;
+
+            try{
+                tmp = mmDevice.createRfcommSocketToServiceRecord(MY_UUID);
+            }catch (Exception e){
+                Log.e(TAG, "Socket's create() method failed", e);
+            }
+            mmSocket = tmp;
+        }
+
+        public void run(){
+            bluetoothAdapter.cancelDiscovery();
+            try {
+                mmSocket.connect();
+            } catch (IOException connectException) {
+                try {
+                    mmSocket.close();
+                } catch (IOException closeException) {
+                    Log.e(TAG, "Could not close the client socket", closeException);
+                }
+                return;
+            }
+        }
+
+        public void cancel(){
+            try {
+                mmSocket.close();
+            } catch (IOException e) {
+                Log.e(TAG, "Could not close the client socket", e);
+            }
+        }
     }
 }

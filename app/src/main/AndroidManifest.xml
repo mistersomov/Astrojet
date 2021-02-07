@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.juggler">
+    package="com.example.astrojet">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -14,13 +14,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Juggler">
-        <activity android:name=".DeviceActivity"
-            android:screenOrientation="portrait">
+        <activity android:name="com.example.astrojet.DeviceActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity">
         </activity>
-        <activity android:name=".CameraActivity" />
-        <activity android:name=".ChartsActivity" />
+        <activity android:name="com.example.astrojet.CameraActivity"
+            android:parentActivityName=".MainActivity"/>
+        <activity android:name="com.example.astrojet.ChartsActivity"
+            android:parentActivityName=".MainActivity"/>
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.astrojet.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

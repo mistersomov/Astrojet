@@ -1,6 +1,5 @@
-package com.example.juggler;
+package com.example.astrojet;
 
-import android.bluetooth.BluetoothDevice;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

@@ -1,4 +1,4 @@
-package com.example.juggler;
+package com.example.astrojet;
 
 public class DeviceItem {
 

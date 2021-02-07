@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Juggler</string>
+    <string name="app_name">Astrojet</string>
 
     <string name="connect_caption">Bluetooth</string>
     <string name="select_device">Select Device</string>
