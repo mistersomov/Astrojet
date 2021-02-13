@@ -18,6 +18,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -35,8 +36,8 @@ public class DeviceActivity extends AppCompatActivity {
 
     private SwipeRefreshLayout swipeRefreshLayout;
 
+    public static final String REM_DEV = "com.example.astrojet.REMOTE_DEVICE";
     private static final String TAG = "DeviceActivity";
-    public static final String REM_DEV = "com.example.astrojet.remDev";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,13 +89,8 @@ public class DeviceActivity extends AppCompatActivity {
                     case BluetoothDevice.ACTION_BOND_STATE_CHANGED:
                         int extraBond = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, -1);
                         if (extraBond == BluetoothDevice.BOND_BONDED){
-                            //startActivityForResult(new Intent(DeviceActivity.this, MainActivity.class), 1);
-
-                            Toast.makeText(
-                                    context,
-                                    "Connected",
-                                    Toast.LENGTH_SHORT
-                            ).show();
+                            DataHolder.getInstance().saveData(REM_DEV, remDev);
+                            //startActivityForResult(new Intent(DeviceActivity.this, MainActivity.class),RESULT_OK);
                             finish();
                         }
                         break;
@@ -150,11 +146,6 @@ public class DeviceActivity extends AppCompatActivity {
         bluetoothAdapter.cancelDiscovery();
         unregisterReceiver(broadcastReceiver);
 
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
     }
 
     public void refresh(){

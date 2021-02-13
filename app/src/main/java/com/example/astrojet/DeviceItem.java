@@ -1,5 +1,7 @@
 package com.example.astrojet;
 
+import android.bluetooth.BluetoothDevice;
+
 public class DeviceItem {
 
     private String deviceName, deviceAddress;

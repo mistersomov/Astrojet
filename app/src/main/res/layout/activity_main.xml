@@ -35,7 +35,7 @@
                         android:id="@+id/indicators_caption"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="start"
+                        android:layout_gravity="center_vertical"
                         android:layout_margin="10dp"
                         android:text="@string/indicators_card"
                         android:textAppearance="?attr/textAppearanceCaption"
@@ -189,16 +189,38 @@
                         android:orientation="vertical"
                         android:animateLayoutChanges="true">
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/connect_caption"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="start"
-                            android:layout_margin="10dp"
-                            android:text="@string/connect_caption"
-                            android:textAppearance="?attr/textAppearanceCaption"
-                            android:textSize="14sp" />
+                            android:orientation="horizontal"
+                            android:layout_margin="10dp">
 
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/connect_caption"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:text="@string/connect_caption"
+                                android:textAppearance="?attr/textAppearanceCaption"
+                                android:textSize="14sp" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:text="@string/socket"
+                                android:textAppearance="?attr/textAppearanceCaption"
+                                android:layout_margin="2.5dp"
+                                android:textSize="10sp"/>
+
+                            <ImageView
+                                android:id="@+id/socket_status"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical" />
+
+                        </LinearLayout>
                     </LinearLayout>
 
                 </com.google.android.material.card.MaterialCardView>
@@ -328,7 +350,7 @@
                                 android:id="@+id/station_caption"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="start"
+                                android:layout_gravity="center_vertical"
                                 android:layout_margin="10dp"
                                 android:text="@string/station_card"
                                 android:textAppearance="?attr/textAppearanceCaption"
@@ -411,7 +433,7 @@
                                 android:id="@+id/design_caption"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="start"
+                                android:layout_gravity="center_vertical"
                                 android:layout_margin="10dp"
                                 android:text="@string/design_card"
                                 android:textAppearance="?attr/textAppearanceCaption"

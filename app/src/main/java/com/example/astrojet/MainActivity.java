@@ -4,6 +4,7 @@ package com.example.astrojet;
 import java.io.IOException;
 import java.util.UUID;
 
+import androidx.annotation.UiThread;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -18,21 +19,21 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 public class MainActivity extends AppCompatActivity {
 
-    //UUID
-    private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private static final String TAG = "MainActivity";
 
     private BluetoothAdapter bluetoothAdapter;
-    private BluetoothDevice remoteDevice;
     private LinearLayout bluetoothLayout;
     private BluetoothService bluetoothService;
+    private SwitchMaterial powerSwitch, ledSwitch;
 
     private MaterialCardView cameraCard, chartsCard;
 
@@ -45,10 +46,12 @@ public class MainActivity extends AppCompatActivity {
 
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         bluetoothLayout = findViewById(R.id.bluetooth_ll);
-        remoteDevice = null;
 
         bluetoothService = new BluetoothService(this, bluetoothAdapter, bluetoothLayout);
         bluetoothLayout.addView(bluetoothService.setView());
+
+        powerSwitch = findViewById(R.id.service_switch);
+        ledSwitch = findViewById(R.id.led_switch);
 
         cameraCard = findViewById(R.id.camera_card);
         cameraCard.setOnClickListener(new View.OnClickListener() {
@@ -67,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
 
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -77,15 +81,25 @@ public class MainActivity extends AppCompatActivity {
             switch (action){
                 case BluetoothDevice.ACTION_BOND_STATE_CHANGED:
                     int extraBond = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, -1);
-                    if (extraBond == BluetoothDevice.BOND_NONE){
-                        bluetoothLayout.addView(bluetoothService.update());
+                    if (extraBond == BluetoothDevice.BOND_BONDED) {
+                        Toast.makeText(
+                                MainActivity.this,
+                                "Connected",
+                                Toast.LENGTH_SHORT
+                        ).show();
+                    }else if (extraBond == BluetoothDevice.BOND_NONE){
+                        try {
+                            bluetoothLayout.addView(bluetoothService.update());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         Toast.makeText(
                                 MainActivity.this,
                                 "Disconnected",
                                 Toast.LENGTH_SHORT
                         ).show();
                     }
-                    break;
+                break;
             }
         }
     };
@@ -97,56 +111,39 @@ public class MainActivity extends AppCompatActivity {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
         registerReceiver(broadcastReceiver, intentFilter);
+
+        powerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+            }
+        });
+
+        ledSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    bluetoothService.send(MessageConstants.LED_ON);
+                }else{
+                    bluetoothService.send(MessageConstants.LED_OFF);
+                }
+            }
+        });
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        bluetoothLayout.addView(bluetoothService.update());
-
+        try {
+            bluetoothLayout.addView(bluetoothService.update());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(broadcastReceiver);
-    }
-    private class ClientSocket extends Thread{
-        private final BluetoothSocket mmSocket;
-        private final BluetoothDevice mmDevice;
-
-        public ClientSocket(BluetoothDevice device){
-            BluetoothSocket tmp = null;
-            mmDevice = device;
-
-            try{
-                tmp = mmDevice.createRfcommSocketToServiceRecord(MY_UUID);
-            }catch (Exception e){
-                Log.e(TAG, "Socket's create() method failed", e);
-            }
-            mmSocket = tmp;
-        }
-
-        public void run(){
-            bluetoothAdapter.cancelDiscovery();
-            try {
-                mmSocket.connect();
-            } catch (IOException connectException) {
-                try {
-                    mmSocket.close();
-                } catch (IOException closeException) {
-                    Log.e(TAG, "Could not close the client socket", closeException);
-                }
-                return;
-            }
-        }
-
-        public void cancel(){
-            try {
-                mmSocket.close();
-            } catch (IOException e) {
-                Log.e(TAG, "Could not close the client socket", e);
-            }
-        }
     }
 }
