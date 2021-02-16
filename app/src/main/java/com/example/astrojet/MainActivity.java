@@ -2,16 +2,14 @@ package com.example.astrojet;
 
 
 import java.io.IOException;
-import java.util.UUID;
+import java.lang.reflect.Method;
 
-import androidx.annotation.UiThread;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import android.bluetooth.BluetoothAdapter;
 
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -26,7 +24,7 @@ import android.widget.Toast;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ConnectionStatusListener {
 
     private static final String TAG = "MainActivity";
 
@@ -91,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             bluetoothLayout.addView(bluetoothService.update());
                         } catch (IOException e) {
-                            e.printStackTrace();
+                            connectError();
                         }
                         Toast.makeText(
                                 MainActivity.this,
@@ -99,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.LENGTH_SHORT
                         ).show();
                     }
-                break;
+                    break;
             }
         }
     };
@@ -122,9 +120,9 @@ public class MainActivity extends AppCompatActivity {
         ledSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
+                if (isChecked && bluetoothService.socketUpdated){
                     bluetoothService.send(MessageConstants.LED_ON);
-                }else{
+                }else if (!isChecked && bluetoothService.socketUpdated){
                     bluetoothService.send(MessageConstants.LED_OFF);
                 }
             }
@@ -137,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             bluetoothLayout.addView(bluetoothService.update());
         } catch (IOException e) {
-            e.printStackTrace();
+            connectError();
         }
     }
 
@@ -145,5 +143,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(broadcastReceiver);
+    }
+
+    @Override
+    public void connect() {
+
+    }
+
+    @Override
+    public void connectError() {
+        bluetoothService.close();
+    }
+
+    @Override
+    public void disconnect() {
+
     }
 }

@@ -206,16 +206,16 @@
                                 android:textSize="14sp" />
 
                             <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/socket_status"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:text="@string/socket"
                                 android:textAppearance="?attr/textAppearanceCaption"
                                 android:layout_margin="2.5dp"
                                 android:textSize="10sp"/>
 
                             <ImageView
-                                android:id="@+id/socket_status"
+                                android:id="@+id/socket_status_icon"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical" />

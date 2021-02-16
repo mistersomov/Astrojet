@@ -19,7 +19,8 @@
             android:parentActivityName=".MainActivity">
         </activity>
         <activity android:name="com.example.astrojet.CameraActivity"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="landscape"/>
         <activity android:name="com.example.astrojet.ChartsActivity"
             android:parentActivityName=".MainActivity"/>
         <activity
