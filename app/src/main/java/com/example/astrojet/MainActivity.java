@@ -1,11 +1,11 @@
 package com.example.astrojet;
 
-
 import java.io.IOException;
 import java.lang.reflect.Method;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.bluetooth.BluetoothAdapter;
 
@@ -23,15 +23,18 @@ import android.widget.Toast;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.android.material.transition.MaterialFadeThrough;
 
-public class MainActivity extends AppCompatActivity implements ConnectionStatusListener {
+public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
     private BluetoothAdapter bluetoothAdapter;
     private LinearLayout bluetoothLayout;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private BluetoothService bluetoothService;
     private SwitchMaterial powerSwitch, ledSwitch;
+    private ManageConnection manageConnection;
 
     private MaterialCardView cameraCard, chartsCard;
 
@@ -47,6 +50,19 @@ public class MainActivity extends AppCompatActivity implements ConnectionStatusL
 
         bluetoothService = new BluetoothService(this, bluetoothAdapter, bluetoothLayout);
         bluetoothLayout.addView(bluetoothService.setView());
+
+        manageConnection = new ManageConnection(this, bluetoothService);
+        //manageConnection.setSocket();
+
+        swipeRefreshLayout = findViewById(R.id.main_swipe);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                manageConnection.setSocket();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         powerSwitch = findViewById(R.id.service_switch);
         ledSwitch = findViewById(R.id.led_switch);
@@ -68,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements ConnectionStatusL
                 startActivity(intent);
             }
         });
-
     }
 
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -80,22 +95,27 @@ public class MainActivity extends AppCompatActivity implements ConnectionStatusL
                 case BluetoothDevice.ACTION_BOND_STATE_CHANGED:
                     int extraBond = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, -1);
                     if (extraBond == BluetoothDevice.BOND_BONDED) {
-                        Toast.makeText(
-                                MainActivity.this,
-                                "Connected",
-                                Toast.LENGTH_SHORT
-                        ).show();
+                        try {
+                            bluetoothLayout.addView(bluetoothService.update());
+                            Toast.makeText(
+                                    MainActivity.this,
+                                    "Connected",
+                                    Toast.LENGTH_SHORT
+                            ).show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }else if (extraBond == BluetoothDevice.BOND_NONE){
                         try {
                             bluetoothLayout.addView(bluetoothService.update());
+                            Toast.makeText(
+                                    MainActivity.this,
+                                    "Disconnected",
+                                    Toast.LENGTH_SHORT
+                            ).show();
                         } catch (IOException e) {
-                            connectError();
+                            e.printStackTrace();
                         }
-                        Toast.makeText(
-                                MainActivity.this,
-                                "Disconnected",
-                                Toast.LENGTH_SHORT
-                        ).show();
                     }
                     break;
             }
@@ -113,17 +133,23 @@ public class MainActivity extends AppCompatActivity implements ConnectionStatusL
         powerSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                try{
 
+                }catch (Exception e){
+
+                }
             }
         });
 
         ledSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked && bluetoothService.socketUpdated){
-                    bluetoothService.send(MessageConstants.LED_ON);
-                }else if (!isChecked && bluetoothService.socketUpdated){
-                    bluetoothService.send(MessageConstants.LED_OFF);
+                if (isChecked){
+                    String s = "9";
+                    manageConnection.write(s.getBytes());
+                }else if (!isChecked){
+                    String s = "8";
+                    manageConnection.write(s.getBytes());
                 }
             }
         });
@@ -132,31 +158,12 @@ public class MainActivity extends AppCompatActivity implements ConnectionStatusL
     @Override
     protected void onRestart() {
         super.onRestart();
-        try {
-            bluetoothLayout.addView(bluetoothService.update());
-        } catch (IOException e) {
-            connectError();
-        }
+        manageConnection.setSocket();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(broadcastReceiver);
-    }
-
-    @Override
-    public void connect() {
-
-    }
-
-    @Override
-    public void connectError() {
-        bluetoothService.close();
-    }
-
-    @Override
-    public void disconnect() {
-
     }
 }
