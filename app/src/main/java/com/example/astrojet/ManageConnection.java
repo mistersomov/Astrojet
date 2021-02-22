@@ -23,6 +23,7 @@ public class ManageConnection implements Runnable, ConnectionStatusListener{
     protected static MaterialTextView socketStatus;
     protected static ImageView socketStatusIcon;
     private BluetoothService bluetoothService;
+    protected static boolean connected;
 
     public ManageConnection(Activity context, BluetoothService bluetoothService){
         this.context = context;
@@ -42,13 +43,13 @@ public class ManageConnection implements Runnable, ConnectionStatusListener{
     }
 
     public void setSocket(){
-        if (socket.isConnected()){
+        if (connected){
             return;
-        }else if (!socket.isConnected() && DataHolder.getInstance().isSaved){
+        }else if (!connected && DataHolder.getInstance().isSaved){
             device = (BluetoothDevice) DataHolder.getInstance().loadData(DeviceActivity.REM_DEV);
             run();
             return;
-        }else if (!socket.isConnected() && !DataHolder.getInstance().isSaved){
+        }else if (!connected && !DataHolder.getInstance().isSaved){
             for (BluetoothDevice i : bluetoothService.pairedDevices){
                 device = i;
                 run();
@@ -67,6 +68,7 @@ public class ManageConnection implements Runnable, ConnectionStatusListener{
             socket = device.createRfcommSocketToServiceRecord(MY_UUID);
             socket.connect();
             if (socket.isConnected()){
+                connected = true;
                 socketStatus.setText(R.string.socket);
                 socketStatusIcon.setImageResource(R.drawable.ic_baseline_check_circle_24);
 
@@ -82,6 +84,7 @@ public class ManageConnection implements Runnable, ConnectionStatusListener{
     public void connectLost() {
         try {
             socket.close();
+            connected = false;
             socketStatus.setText(R.string.socket);
             socketStatusIcon.setImageResource(R.drawable.ic_baseline_cancel_24);
             Toast.makeText(
