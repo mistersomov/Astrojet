@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         manageConnection = new ManageConnection(this, bluetoothService);
         //manageConnection.setSocket();
 
+        /*
         swipeRefreshLayout = findViewById(R.id.main_swipe);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
-
+        */
         powerSwitch = findViewById(R.id.service_switch);
         ledSwitch = findViewById(R.id.led_switch);
 

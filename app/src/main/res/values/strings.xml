@@ -24,6 +24,9 @@
     <string name="indicators_altitude">Altitude</string>
     <string name="indicators_speed">Speed</string>
     <string name="indicators_rotation">Rotation</string>
+    <string name="indicators_rotation_x">X:</string>
+    <string name="indicators_rotation_y">Y:</string>
+    <string name="indicators_rotation_z">Z:</string>
     <string name="indicators_temperature">Temperature</string>
 
 </resources>
