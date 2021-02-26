@@ -68,7 +68,7 @@ public class DeviceActivity extends AppCompatActivity {
                 switch (action) {
                     case BluetoothAdapter.ACTION_STATE_CHANGED:
                         if (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1) == BluetoothAdapter.STATE_ON) {
-                            bluetoothAdapter.startDiscovery();
+                            refresh();
                         }else if (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1) == BluetoothAdapter.STATE_OFF) {
                             bluetoothAdapter.cancelDiscovery();
                         }
@@ -149,13 +149,18 @@ public class DeviceActivity extends AppCompatActivity {
     }
 
     public void refresh(){
-        bluetoothAdapter.cancelDiscovery();
-        bluetoothDevices.clear();
-        adapter.notifyDataSetChanged();
-        isRestarted = false;
-        bluetoothAdapter.startDiscovery();
+        if (!bluetoothAdapter.isEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, 1);
+        }else{
+            bluetoothAdapter.cancelDiscovery();
+            bluetoothDevices.clear();
+            adapter.notifyDataSetChanged();
+            isRestarted = false;
+            bluetoothAdapter.startDiscovery();
 
-        swipeRefreshLayout.setRefreshing(false);
+            swipeRefreshLayout.setRefreshing(false);
+        }
     }
 
     private class BondThread implements Runnable{

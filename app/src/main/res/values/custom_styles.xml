@@ -1,6 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--Main Activity-->
+    <style name="card">
+        <item name="android:layout_marginStart">5dp</item>
+        <item name="android:layout_marginTop">2.5dp</item>
+        <item name="android:layout_marginEnd">5dp</item>
+        <item name="android:layout_marginBottom">2.5dp</item>
+        <item name="cardCornerRadius">5dp</item>
+        <item name="cardElevation">1dp</item>
+    </style>
+    <style name="card_caption">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Caption</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="indicators_image">
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
+    </style>
+    <style name="indicators_image_caption">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Caption</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+    <style name="indicators_value">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Subhead</item>
+    </style>
     <style name="card_settings_left">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -23,10 +55,10 @@
     </style>
     <!--Camera Activity-->
     <style name="camera_indicators">
-        <item name="android:layout_width">60dp</item>
-        <item name="android:layout_height">60dp</item>
+        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_height">80dp</item>
         <item name="android:layout_marginStart">15dp</item>
-        <item name="android:layout_marginBottom">10dp</item>
+
     </style>
 
 </resources>

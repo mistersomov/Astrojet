@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="100dp"></androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/indicators_card"
+        style="@style/card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="133dp" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/indicators_caption"
+                style="@style/card_caption"
+                android:text="@string/indicators_card"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/speed_icon"
+                style="@style/indicators_image"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="15dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/indicators_caption"
+                app:srcCompat="@drawable/ic_baseline_speed_24" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/speed"
+                style="@style/indicators_image_caption"
+                android:text="@string/indicators_speed"
+                app:layout_constraintBottom_toBottomOf="@+id/speed_icon"
+                app:layout_constraintStart_toEndOf="@+id/speed_icon" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/speed_value"
+                style="@style/indicators_value"
+                android:text="1800"
+                app:layout_constraintEnd_toEndOf="@+id/speed"
+                app:layout_constraintStart_toStartOf="@+id/speed_icon"
+                app:layout_constraintTop_toBottomOf="@+id/speed_icon" />
+
+            <ImageView
+                android:id="@+id/altitude_icon"
+                style="@style/indicators_image"
+                android:layout_marginStart="5dp"
+                app:layout_constraintBottom_toBottomOf="@+id/speed_icon"
+                app:layout_constraintStart_toEndOf="@+id/speed"
+                app:layout_constraintTop_toTopOf="@+id/speed_icon"
+                app:srcCompat="@drawable/ic_baseline_terrain_24" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/altitude"
+                style="@style/indicators_image_caption"
+                android:text="@string/indicators_altitude"
+                app:layout_constraintBottom_toBottomOf="@+id/speed"
+                app:layout_constraintStart_toEndOf="@+id/altitude_icon" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/altitude_value"
+                style="@style/indicators_value"
+                android:text="1800"
+                app:layout_constraintBottom_toBottomOf="@+id/speed_value"
+                app:layout_constraintEnd_toEndOf="@+id/altitude"
+                app:layout_constraintStart_toStartOf="@+id/altitude_icon"
+                app:layout_constraintTop_toTopOf="@+id/speed_value" />
+
+            <ImageView
+                android:id="@+id/rotation_icon"
+                style="@style/indicators_image"
+                android:layout_marginStart="5dp"
+                app:layout_constraintBottom_toBottomOf="@+id/speed_icon"
+                app:layout_constraintStart_toStartOf="@+id/guideline"
+                app:layout_constraintTop_toTopOf="@+id/speed_icon"
+                app:srcCompat="@drawable/ic_baseline_3d_rotation_24" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/rotation"
+                style="@style/indicators_image_caption"
+                android:text="@string/indicators_rotation"
+                app:layout_constraintBottom_toBottomOf="@+id/speed"
+                app:layout_constraintStart_toEndOf="@+id/rotation_icon" />
+
+            <ImageView
+                android:id="@+id/temperature_icon"
+                style="@style/indicators_image"
+                android:layout_marginStart="5dp"
+                app:layout_constraintBottom_toBottomOf="@+id/speed_icon"
+                app:layout_constraintStart_toEndOf="@+id/rotation"
+                app:layout_constraintTop_toTopOf="@+id/speed_icon"
+                app:srcCompat="@drawable/ic_baseline_device_thermostat_24" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/temperature"
+                style="@style/indicators_image_caption"
+                android:text="@string/indicators_temperature"
+                app:layout_constraintBottom_toBottomOf="@+id/speed"
+                app:layout_constraintStart_toEndOf="@+id/temperature_icon" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/temperature_value"
+                style="@style/indicators_value"
+                android:text="1800"
+                app:layout_constraintBottom_toBottomOf="@+id/speed_value"
+                app:layout_constraintEnd_toEndOf="@+id/temperature"
+                app:layout_constraintStart_toStartOf="@+id/temperature_icon"
+                app:layout_constraintTop_toTopOf="@+id/speed_value" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottom_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:hideOnScroll="true"
+        style="@style/Widget.MaterialComponents.BottomAppBar.Colored"/>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/bottom_app_bar"
+        app:srcCompat="@drawable/ic_baseline_public_24"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

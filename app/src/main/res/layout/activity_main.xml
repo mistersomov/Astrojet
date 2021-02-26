@@ -18,6 +18,7 @@
             android:orientation="vertical">
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/indicators_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
@@ -74,7 +75,7 @@
                             android:id="@+id/altitude_icon"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/ic_baseline_height_24" />
+                            android:src="@drawable/ic_baseline_terrain_24" />
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/altitude"
@@ -107,7 +108,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="10dp"
-                            android:src="@drawable/ic_baseline_ac_unit_24"/>
+                            android:src="@drawable/ic_baseline_device_thermostat_24"/>
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/temperature"
@@ -124,9 +125,9 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="horizontal"
                         android:paddingTop="5dp"
-                        android:paddingBottom="10dp"
-                        android:orientation="horizontal">
+                        android:paddingBottom="10dp">
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/speed_value"
@@ -134,7 +135,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:textAlignment="center"
-                            android:textAppearance="?attr/textAppearanceHeadline5"/>
+                            android:textAppearance="?attr/textAppearanceHeadline5" />
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/altitude_value"
@@ -142,7 +143,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:textAlignment="center"
-                            android:textAppearance="?attr/textAppearanceHeadline5"/>
+                            android:textAppearance="?attr/textAppearanceHeadline5" />
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/rotation_value"
@@ -150,7 +151,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:textAlignment="center"
-                            android:textAppearance="?attr/textAppearanceHeadline5"/>
+                            android:textAppearance="?attr/textAppearanceHeadline5" />
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/temperature_value"
@@ -158,11 +159,12 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:textAlignment="center"
-                            android:textAppearance="?attr/textAppearanceHeadline5"/>
+                            android:textAppearance="?attr/textAppearanceHeadline5" />
 
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
 
             <LinearLayout
                 android:layout_width="match_parent"

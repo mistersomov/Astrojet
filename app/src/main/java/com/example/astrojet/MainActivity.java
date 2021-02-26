@@ -1,7 +1,6 @@
 package com.example.astrojet;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -15,7 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
@@ -23,7 +22,6 @@ import android.widget.Toast;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.switchmaterial.SwitchMaterial;
-import com.google.android.material.transition.MaterialFadeThrough;
 
 public class MainActivity extends AppCompatActivity {
 
