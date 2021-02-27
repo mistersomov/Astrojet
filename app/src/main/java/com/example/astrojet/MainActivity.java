@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.bluetooth.BluetoothAdapter;
@@ -15,11 +16,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
@@ -29,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     private BluetoothAdapter bluetoothAdapter;
     private LinearLayout bluetoothLayout;
+    private BottomAppBar bottomAppBar;
     private SwipeRefreshLayout swipeRefreshLayout;
     private BluetoothService bluetoothService;
     private SwitchMaterial powerSwitch, ledSwitch;
@@ -49,10 +53,11 @@ public class MainActivity extends AppCompatActivity {
         bluetoothService = new BluetoothService(this, bluetoothAdapter, bluetoothLayout);
         bluetoothLayout.addView(bluetoothService.setView());
 
+        bottomAppBar = findViewById(R.id.bottom_app_bar);
+
         manageConnection = new ManageConnection(this, bluetoothService);
         //manageConnection.setSocket();
 
-        /*
         swipeRefreshLayout = findViewById(R.id.main_swipe);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -62,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
-        */
+
         powerSwitch = findViewById(R.id.service_switch);
         ledSwitch = findViewById(R.id.led_switch);
 
