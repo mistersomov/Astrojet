@@ -16,13 +16,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
@@ -35,10 +35,11 @@ public class MainActivity extends AppCompatActivity {
     private BottomAppBar bottomAppBar;
     private SwipeRefreshLayout swipeRefreshLayout;
     private BluetoothService bluetoothService;
-    private SwitchMaterial powerSwitch, ledSwitch;
+    private SwitchMaterial powerSwitch, ledSwitch, trackSwitch;
     private ManageConnection manageConnection;
 
     private MaterialCardView cameraCard, chartsCard;
+    protected MaterialButton servoButton, gearButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,18 +48,17 @@ public class MainActivity extends AppCompatActivity {
         //Setting Theme
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 
+        findingView();
+
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         bluetoothLayout = findViewById(R.id.bluetooth_ll);
 
         bluetoothService = new BluetoothService(this, bluetoothAdapter, bluetoothLayout);
         bluetoothLayout.addView(bluetoothService.setView());
 
-        bottomAppBar = findViewById(R.id.bottom_app_bar);
-
         manageConnection = new ManageConnection(this, bluetoothService);
         //manageConnection.setSocket();
 
-        swipeRefreshLayout = findViewById(R.id.main_swipe);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -68,10 +68,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        powerSwitch = findViewById(R.id.service_switch);
-        ledSwitch = findViewById(R.id.led_switch);
-
-        cameraCard = findViewById(R.id.camera_card);
         cameraCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        chartsCard = findViewById(R.id.charts_card);
         chartsCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,6 +152,18 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        trackSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    TrackingSystem trackingSystem = new TrackingSystem();
+                    trackingSystem.show(getSupportFragmentManager(), "null");
+                }else{
+
+                }
+            }
+        });
     }
 
     @Override
@@ -169,5 +176,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(broadcastReceiver);
+    }
+
+    private void findingView(){
+        bottomAppBar = findViewById(R.id.bottom_app_bar);
+        swipeRefreshLayout = findViewById(R.id.main_swipe);
+        powerSwitch = findViewById(R.id.service_switch);
+        ledSwitch = findViewById(R.id.led_switch);
+        trackSwitch = findViewById(R.id.track_switch);
+        cameraCard = findViewById(R.id.camera_card);
+        chartsCard = findViewById(R.id.charts_card);
+        servoButton = findViewById(R.id.servo_btn);
+        gearButton = findViewById(R.id.gear_btn);
     }
 }

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.io.IOException;
@@ -23,7 +24,7 @@ public class ManageConnection implements Runnable, ConnectionStatusListener{
     protected static MaterialTextView socketStatus;
     protected static ImageView socketStatusIcon;
     private BluetoothService bluetoothService;
-    protected static boolean connected;
+    protected static boolean connected, isFlag;
 
     public ManageConnection(Activity context, BluetoothService bluetoothService){
         this.context = context;
@@ -69,8 +70,10 @@ public class ManageConnection implements Runnable, ConnectionStatusListener{
             socket.connect();
             if (socket.isConnected()){
                 connected = true;
+                isFlag = false;
                 socketStatus.setText(R.string.socket);
                 socketStatusIcon.setImageResource(R.drawable.ic_baseline_check_circle_24);
+
 
             }
         } catch (IOException connectException) {
@@ -87,11 +90,15 @@ public class ManageConnection implements Runnable, ConnectionStatusListener{
             connected = false;
             socketStatus.setText(R.string.socket);
             socketStatusIcon.setImageResource(R.drawable.ic_baseline_cancel_24);
-            Toast.makeText(
-                    context,
-                    "Socket is closed",
-                    Toast.LENGTH_SHORT
-            ).show();
+            if (!isFlag){
+                Toast.makeText(
+                        context,
+                        "Socket is closed",
+                        Toast.LENGTH_SHORT
+                ).show();
+                isFlag = true;
+            }
+
         }catch (IOException closeException){
             Log.e(TAG, "Could not close the client socket", closeException);
         }

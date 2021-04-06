@@ -158,7 +158,7 @@ public class DeviceActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged();
             isRestarted = false;
             bluetoothAdapter.startDiscovery();
-
+            
             swipeRefreshLayout.setRefreshing(false);
         }
     }

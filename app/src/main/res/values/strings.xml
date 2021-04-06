@@ -11,6 +11,7 @@
     <string name="station_card">Station</string>
     <string name="led">LED</string>
     <string name="service_power">Power</string>
+    <string name="tracking_sys">Tracking</string>
 
     <string name="calibration_card">Calibration</string>
     <string name="servo">Servo</string>

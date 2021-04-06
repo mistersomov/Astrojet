@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/main_swipe"
         android:layout_width="match_parent"
@@ -284,7 +283,7 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="112dp">
+                        android:layout_height="match_parent">
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/station_caption"
@@ -303,7 +302,6 @@
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/service_power"
                             style="@style/station_params"
-                            android:layout_marginTop="15dp"
                             android:text="@string/service_power"
                             app:layout_constraintStart_toStartOf="@+id/station_caption"
                             app:layout_constraintTop_toBottomOf="@+id/station_caption" />
@@ -316,12 +314,8 @@
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/led"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="15dp"
+                            style="@style/station_params"
                             android:text="@string/led"
-                            android:textAppearance="?attr/textAppearanceBody2"
-                            android:textSize="17sp"
                             app:layout_constraintStart_toStartOf="@+id/service_power"
                             app:layout_constraintTop_toBottomOf="@+id/service_power" />
 
@@ -331,6 +325,18 @@
                             app:layout_constraintBaseline_toBaselineOf="@+id/led"
                             app:layout_constraintEnd_toEndOf="parent" />
 
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/track_sys"
+                            style="@style/station_params"
+                            android:text="@string/tracking_sys"
+                            app:layout_constraintStart_toStartOf="@+id/led"
+                            app:layout_constraintTop_toBottomOf="@+id/led" />
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/track_switch"
+                            style="@style/station_params"
+                            app:layout_constraintBaseline_toBaselineOf="@+id/track_sys"
+                            app:layout_constraintEnd_toEndOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -410,8 +416,8 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/servo_btn"
-                            style="@style/Widget.MaterialComponents.Button.TextButton"
-                            android:layout_width="wrap_content"
+                            style="@style/Widget.MaterialComponents.Button"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15dp"
                             android:text="@string/servo"
@@ -420,12 +426,12 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/gear_btn"
-                            style="@style/Widget.MaterialComponents.Button.TextButton"
-                            android:layout_width="wrap_content"
+                            style="@style/Widget.MaterialComponents.Button"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/gear"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/servo_btn" />
+                            app:layout_constraintStart_toStartOf="@+id/servo_btn"
+                            app:layout_constraintTop_toBottomOf="@+id/servo_btn" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </com.google.android.material.card.MaterialCardView>

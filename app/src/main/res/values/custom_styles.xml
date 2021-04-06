@@ -18,7 +18,7 @@
         <item name="cardElevation">1dp</item>
     </style>
     <style name="card_right">
-        <item name="android:layout_marginStart">2.5dp</item>
+        <item name="android:layout_marginStart">1.25dp</item>
         <item name="android:layout_marginTop">2.5dp</item>
         <item name="android:layout_marginEnd">5dp</item>
         <item name="android:layout_marginBottom">2.5dp</item>
@@ -51,6 +51,7 @@
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Subhead</item>
     </style>
     <style name="station_params">
+        <item name="android:layout_marginTop">15dp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">17sp</item>

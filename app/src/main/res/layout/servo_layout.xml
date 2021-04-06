@@ -17,7 +17,6 @@
         app:iconGravity="textStart"
         app:elevation="1dp"/>
 
-
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/x_value"
         android:layout_width="wrap_content"
