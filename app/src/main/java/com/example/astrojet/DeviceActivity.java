@@ -1,5 +1,6 @@
 package com.example.astrojet;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -71,6 +72,7 @@ public class DeviceActivity extends AppCompatActivity {
                             refresh();
                         }else if (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1) == BluetoothAdapter.STATE_OFF) {
                             bluetoothAdapter.cancelDiscovery();
+                            finish();
                         }
                         break;
 

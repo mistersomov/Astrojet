@@ -80,7 +80,7 @@
                             android:id="@+id/speed_value"
                             style="@style/indicators_value"
                             android:text="1800"
-                            android:layout_marginBottom="2.5dp"
+                            android:layout_marginBottom="5dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="@+id/speed"
                             app:layout_constraintStart_toStartOf="@+id/speed_icon"
@@ -351,10 +351,9 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/materialCardView">
 
-                    <ImageView
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="100dp" />
-
+                        android:layout_height="100dp"/>
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
@@ -447,11 +446,9 @@
                     app:layout_constraintStart_toStartOf="@+id/guideline"
                     app:layout_constraintTop_toBottomOf="@+id/calibration_card">
 
-                    <ImageView
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/cam"/>
+                        android:layout_height="100dp"/>
 
                 </com.google.android.material.card.MaterialCardView>
 

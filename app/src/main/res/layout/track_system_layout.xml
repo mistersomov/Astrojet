@@ -12,19 +12,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginTop="10dp"
-        android:scaleType="fitXY"
-        app:layout_constraintTop_toBottomOf="@+id/track_sys_caption"
-        app:srcCompat="@drawable/ic_speed" />
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/track_sys_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Push"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/track_sys_caption" />
 </androidx.constraintlayout.widget.ConstraintLayout>
